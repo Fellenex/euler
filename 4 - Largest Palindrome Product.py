@@ -6,7 +6,7 @@
 #It then checks to see if the product is a palindrome, then compares it to the old maximum palindrome
 max = 0
 for i in range(100, 1000):
-  for j in range(100, 1000):
+	for j in range(100, 1000):
 		product = i*j
 		strProd = str(product)
 		if len(strProd) == 5:

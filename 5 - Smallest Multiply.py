@@ -4,7 +4,7 @@
 x = 20
 temp = 0
 while(1):
-  for i in range(1, 21):
+	for i in range(1, 21):
 		if (x%i == 0):
 			temp +=1
 	if temp == 20:

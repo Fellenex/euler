@@ -2,7 +2,7 @@
 #~ What is the largest prime factor of the number 600851475143 ?
 
 def check_Prime(n):
-  for i in range(n-1, 1, -1):
+	for i in range(n-1, 1, -1):
 		if ((n%i) == 0):
 			return False
 	primeList.append(n)

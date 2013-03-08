@@ -13,7 +13,7 @@ sumSquares = 0
 squaredSum = 0
 
 for i in range(1, 101):
-  sumSquares += (i*i)
+	sumSquares += (i*i)
 	squaredSum += i
 squaredSum = squaredSum * squaredSum
 

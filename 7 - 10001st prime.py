@@ -2,7 +2,7 @@
 #~ What is the 10 001st prime number?
 
 def check_Prime(n):
-  for i in range(n-1, 1, -1):
+	for i in range(n-1, 1, -1):
 		if ((n%i) == 0):
 			return False
 	primeList.append(n)

@@ -18,7 +18,7 @@
 #appends the values to a list to store them for
 #outside of the function properties
 def collatz(n):
-  collatzList.append(n)
+	collatzList.append(n)
 	if n == 1:
 		return 1
 	if n%2 == 0:

@@ -5,7 +5,7 @@
 import math
 
 def sumOfDigits(n):
-  stringRep = str(n)
+	stringRep = str(n)
 	sum = 0
 	for i in range(len(stringRep)):
 		sum += int(stringRep[i])
