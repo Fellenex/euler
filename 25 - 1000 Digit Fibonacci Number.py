@@ -24,14 +24,19 @@ def rec_Fib(n):
 		return 1
 	else:
 		return rec_Fib(n-1) + rec_Fib(n-2)
-	
-i = 1		
-while (1):
-	temp = str(rec_Fib(i))
-	if len(temp) == 1000:
-		print temp
-		break
-	i+=1
-	
-		
-	
+
+
+fibs = []
+
+#Populate the first few results
+for i in range(0,3):
+	fibs.append(rec_Fib(i))
+
+
+#Perform the rest of them with a list to keep previous results memoized.
+while len(str(fibs[-1])) < 1000:
+	newFib = fibs[-1]+fibs[-2]
+	fibs.append(newFib)
+	print newFib
+
+print len(fibs)
