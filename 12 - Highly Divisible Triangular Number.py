@@ -15,9 +15,9 @@
 
 #~ What is the value of the first triangle number to have over five hundred divisors?
 
-import time
+import math
 
-def triangleNumber(n):
+def linearTriangleNumber(n):
 	sum = 0
 	for i in range(1, n+1):
 		sum += i
@@ -28,33 +28,52 @@ def recTriangleNumber(n):
 		return 1
 	else:
 		return n + (recTriangleNumber(n-1))
-	
-def howManyDivisors(n):
-	divisors = 0
-	for i in range(1, n+1):
+
+def efficientTriangleNumber(n):
+	return int((0.5)*n*(n+1))
+
+def getDivisors(n):
+	divisors = []
+	for i in range(1, int(math.ceil(math.sqrt(n)))):
 		if ((n%i) == 0):
-			divisors +=1
+			divisors.append(i)
+			divisors.append(n/i)
 	return divisors
+
 
 triangleList = []
 divisorsList = []
+highlyComposite = {}
+maxFactors = 1
 
-#speedtesting recursive and nonrecursive forms of finding the triangle numbers
-#~ triangleListTwo = []
-#~ for i in range(500, 601):
-	#~ start = time.clock()
-	#~ triangleList.append(triangleNumber(i))
-	#~ finish = time.clock()
-	#~ print "Non-Rec with {0} took /t {1} time".format((i), (finish-start))
-	
-	#~ start = time.clock()
-	#~ triangleListTwo.append(recTriangleNumber(i))
-	#~ finish = time.clock()
-	#~ print "Recursi with {0} took /t {1} time".format((i), (finish-start))
-for i in range(1, 51):
-	triangleList.append(triangleNumber(i))
-	#divisorsList.append(howManyDivisors(triangleList[i]))
+#A number which has more factors than all smaller numbers is called a "highly composite"
+#number. However, since the numbers being examined are restricted to being a
+#triangular number, these are the highly composite triangular numbers.
+
+
+#76576500 has 576
+
+i=1
+while maxFactors < 500:
+	tn_i = efficientTriangleNumber(i)
+	dn_i = len(getDivisors(tn_i))
+
+	if dn_i > 500:
+		maxFactors = dn_i
+		highlyComposite[tn_i] = dn_i
+		print maxFactors
+		print getDivisors(tn_i)
+	i+=1
+
+
+print "Triangles!"
 print triangleList
+print
+print "Divisors!"
 print divisorsList
+print
+print "Composite!"
+print highlyComposite
+print
 print len(triangleList)
 print len(divisorsList)
