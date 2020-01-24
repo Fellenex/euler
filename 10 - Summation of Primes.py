@@ -47,7 +47,7 @@ def sieve_of_eratos_two(n):
 	for i in range(1, n+1):
 		primeList.append(True)
 		numList.append(i)
-		
+
 	#note, all values referenced in the primeList will be offset by -1 due to 0-based addressing
 	while (carryOn):
 		carryOn = False
@@ -59,9 +59,9 @@ def sieve_of_eratos_two(n):
 			if (primeList[j-1] == True):
 				p = j
 				break
-	
-	
-		
+
+
+
 sum = 0
 x = 250
 numList = []
@@ -79,7 +79,7 @@ primeList = []
 	#~ sieve_of_eratos_two(x)
 	#~ finish = time.clock()
 	#~ print ("Sieve of Eratosth Two with {0} took: \t {1} time".format(x, (finish-start)))
-	
+
 	#~ x *= 2
 	#~ if x > 16001:
 		#~ break
