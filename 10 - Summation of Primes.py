@@ -13,35 +13,16 @@ def check_Prime(n):
 	primeList.append(n)
 	return True
 
-#this function runs quite slowly for a sieve
-#this is because of the "if (p*1) in numList" line.
-#Time-differences show that the next sieve algorithm runs MUCH quicker
-#There is also a lot of extra unnecessary added time due to the recounting numList every time
-#it creates an array of all numbers from 2 to n, and
-#then it checks that array for any multiples of numbers
-#that have not been removed yet (which should be prime)
-def sieve_of_eratos(n):
-	p = 2
-	count = 1
-	removed = 0
-	while (1):
-		for i in range(2, n+1):
-			if (p*i) in numList:
-				numList.remove(p*i)
-				removed +=1
-		if removed == 0:
-			break
-		p = numList[count]
-		count+=1
-		removed = 0
 
 #this version of the sieve function utilizes two arrays, one with
 #numbers, and one with True/False values (True indicating prime and
 #False indicating non-prime). It assumes they are prime, then works
 #to prove that numbers are not by removing all of the multiples of
 #other numbers
-
 def sieve_of_eratos_two(n):
+	primeList = []
+	numList = []
+
 	p = 2
 	carryOn = True
 	for i in range(1, n+1):
@@ -60,7 +41,11 @@ def sieve_of_eratos_two(n):
 				p = j
 				break
 
+	return(primeList)
 
+
+#More space-efficient version of eratosthenes' sieve
+#(using dictionaries this time, instead of giant lists)
 def sieve_of_eratos_three(n):
 	p = 2
 	carryOn = True
@@ -83,6 +68,14 @@ def sieve_of_eratos_three(n):
 				p = j
 				break
 
+	return(primeDict)
+
+#An actually efficient sieve algorithm, modified
+#	to be more space-efficient with the use of dictionaries.
+#Finds all primes below supplied integer n.
+#Since we don't initialize the value of each integer,
+#	there is some sketchy repeated try/except code to calculate the XOR.
+#Factoring it out would mean passing the data structure around.
 def sieve_of_atkin(n):
 	primeDict = {}
 	if n > 2: primeDict[2]=True
@@ -140,47 +133,39 @@ def sieve_of_atkin(n):
 			pass
 		r+=1
 
-	primeSum = 0
+	primesList = []
+	fakePrimes = []
 	for key in primeDict:
-		primeSum += key
-	print(primeSum)
+		if primeDict[key]:
+			primesList.append(key)
+
+	return(primesList)
 
 
-sum = 0
-x = 2000000
-numList = []
-primeList = []
 
-#This section of code compares the two Sieve functions. The second one runs slower with lower values
-#but it will dramatically increase speed as the size increases.
-while (1):
-#	start = time.clock()
-#	sieve_of_eratos(x)
-#	finish = time.clock()
-#	print ("Sieve of Eratosthenes with {0} took: \t {1} time".format(x, (finish-start)))
+def compareSieves():
+	x = 250
+	while (x < 16001):
+		start = time.clock()
+		sieve_of_eratos_two(x)
+		finish = time.clock()
+		print ("Sieve of Eratosthenes with {0} took: \t {1} time".format(x, (finish-start)))
 
-#	start = time.clock()
-#	sieve_of_eratos_two(x)
-#	finish = time.clock()
-#	print ("Sieve of Eratosth Two with {0} took: \t {1} time".format(x, (finish-start)))
+		start = time.clock()
+		sieve_of_eratos_three(x)
+		finish = time.clock()
+		print ("Sieve of Eratosthenes with {0} took: \t {1} time".format(x, (finish-start)))
 
-	#start = time.clock()
-	#sieve_of_eratos_three(x)
-	#finish = time.clock()
-	#print ("Sieve of Eratosth Three with {0} took: \t {1} time".format(x, (finish-start)))
+		start = time.clock()
+		sieve_of_atkin(x)
+		finish = time.clock()
+		print ("Sieve of Eratosthenes with {0} took: \t {1} time".format(x, (finish-start)))
 
-	start = time.clock()
-	sieve_of_atkin(x)
-	finish = time.clock()
-	print ("Sieve of Atkin with {0} took: \t {1} time".format(x, (finish-start)))
+		x *= 2
 
-	if x > 2000000:
-		break
 
-	x *= 2
-
-#sieve_of_eratos_two(2000000)
-#for i in range(len(numList)):
-#	if primeList[i] == True:
-#		sum += numList[i]
-#print sum
+maxValue = 2000000
+primes = sieve_of_atkin(maxValue)
+print(primes)
+print("Found "+str(len(primes))+" below "+str(maxValue))
+print("The sum of these primes is "+str(sum(primes)))
