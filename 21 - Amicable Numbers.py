@@ -8,36 +8,40 @@
 
 #~ Evaluate the sum of all the amicable numbers under 10000.
 
-def sumFactors(n):
-	x = (n/2)+1
-	factorsList = []
-	while (1):
-		if (x == 0):
-			break
-		if ((n % x) == 0):
-			factorsList.append(x)
-		x -= 1
-	sum = 0
-	for i in range(len(factorsList)):
-		sum += factorsList[i]
-	return sum
+from primeFuncs import *
 
-def check_Prime(n):
-	for i in range(n-1, 1, -1):
-		if ((n%i) == 0):
-			return False
-	primeList.append(n)
-	return True
+factorDict = {}
+amicableNumbers = {}
+for i in range(2, 10000):
 
-amicableNum = 0
-totalSum = 0
+	#set the factors up for this number
+	try:
+		if factorDict[i]: pass
+		else: exit("ERROR")
+	except:
+		factorDict[i] = findFactors(i)
+	firstSum = sum(factorDict[i])
 
-for i in range(1, 221):
-	amicableNum = sumFactors(i)
-	if (sumFactors(i) == sumFactors(amicableNum)):
+	#print("sum of "+str(i)+"'s factors is "+str(firstSum))
 
-		print i
-		print amicableNum
-		print sumFactors(i)
-		print sumFactors(amicableNum)
-		print
+	#get the factors for the sum of the first number's factors
+	try:
+		if factorDict[firstSum]: pass
+		else: exit("ERROR")
+	except:
+		factorDict[firstSum] = findFactors(firstSum)
+	secondSum = sum(factorDict[firstSum])
+
+	#print("sum of "+str(firstSum)+"'s factors is "+str(sum(factorDict[firstSum])))
+
+	#If the sums of each factors list are reciprocal, then they are amicable numbers.
+	if (secondSum == i) and not(firstSum == i):
+		print(str(i)+" and "+str(firstSum)+" are amicable numbers")
+		amicableNumbers[i] = True
+		amicableNumbers[firstSum] = True
+
+sum = 0
+for key in amicableNumbers:
+	sum += key
+print(amicableNumbers)
+print(sum)

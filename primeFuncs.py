@@ -9,6 +9,17 @@ def check_Prime(n):
 		i -= 1
 	return True
 
+#Gets a list of factors for n
+def findFactors(n):
+	i = (n/2)+1
+	factorsList = []
+	while (i > 0):
+		if ((n % i) == 0):
+			factorsList.append(i)
+		i -= 1
+	factorsList.reverse()
+	return(factorsList)
+
 
 #this version of the sieve function utilizes two arrays, one with
 #numbers, and one with True/False values (True indicating prime and

@@ -3,14 +3,7 @@
 
 from primeFuncs import *
 
-def findFactors(n):
-	x = (n/2)+1
-	while (1):
-		if (x == 0):
-			break
-		if ((n % x) == 0):
-			return(x)
-		x -= 1
+
 
 def uniquePrimeFactorization(n):
 	primeFactors = []
