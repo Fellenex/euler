@@ -29,8 +29,6 @@ def uniquePrimeFactorization(n):
 	primeFactors.append(n)
 	return(primeFactors)
 
-
-
 target = 600851475143
 
 print(uniquePrimeFactorization(target))
