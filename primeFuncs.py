@@ -1,4 +1,3 @@
-#was going to use this function, but it has sluggish time
 #This function was stripped directly from problem 7, where it was
 #written to find the 10001st prime.
 def check_Prime(n):
