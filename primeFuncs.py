@@ -11,6 +11,7 @@ def check_Prime(n):
 
 #Gets a list of factors for n
 def findFactors(n):
+	if n == 1 or n == 2: return([1])
 	i = (n/2)+1
 	factorsList = []
 	while (i > 0):
