@@ -1,7 +1,8 @@
 #This function was stripped directly from problem 7, where it was
 #written to find the 10001st prime.
 def check_Prime(n):
-	print("Checking primality of "+str(n))
+	n = abs(n)
+	#print("Checking primality of "+str(n))
 	i = n-1
 	while (i > 1):
 		if ((n%i) == 0):
