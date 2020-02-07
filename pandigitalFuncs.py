@@ -1,7 +1,7 @@
-pandigitalNum = 9
+pandigitalBase = 9
 
 #determines if a single number has any overlapping digits
-def isValidMult(_number, _pandigitality=pandigitalNum, _noZeroesAllowed = True):
+def isValidMult(_number, _pandigitality=pandigitalBase, _noZeroesAllowed = True):
     strN = str(_number)
     validity = True
     if '0' in strN and _noZeroesAllowed:
@@ -19,7 +19,7 @@ def isValidMult(_number, _pandigitality=pandigitalNum, _noZeroesAllowed = True):
     return(validity)
 
 #This function shouldn't be used on numbers containing 0s, since we are only looking to count integers from 1..n
-def countList(_number, _pandigitality=pandigitalNum, _noZeroesAllowed=True):
+def countList(_number, _pandigitality=pandigitalBase, _noZeroesAllowed=True):
     strN = str(_number)
     if _noZeroesAllowed:
         cList = [0]*_pandigitality
@@ -49,9 +49,9 @@ def countListMulti(_numbers):
         cLists.append(countList(n))
 
     #merge the counts of all the lists by index
-    fList = [0]*pandigitalNum
+    fList = [0]*pandigitalBase
     for i in range(len(cLists)):
-        for j in range(pandigitalNum):
+        for j in range(pandigitalBase):
             fList[j] += cLists[i][j]
 
     return(fList)
