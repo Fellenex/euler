@@ -1,6 +1,4 @@
-#Returns a list of the first _n pentagonal numbers
-def generatePentagonals(_n):
-    return([int(i*(3*i-1)/2) for i in range(1,_n+1)])
+from numberSequences import generatePentagonals
 
 
 #Goes high up enough to find the first (and correct) solution
