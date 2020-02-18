@@ -1,3 +1,5 @@
+import math
+
 #This function was stripped directly from problem 7, where it was
 #written to find the 10001st prime.
 def check_Prime(n):
@@ -8,6 +10,18 @@ def check_Prime(n):
 		if ((n%i) == 0):
 			return False
 		i -= 1
+	return True
+
+#Written for problem 58, when old check_Prime was far too inefficient
+def checkPrimeEfficiently(n):
+	n = abs(n)
+	i = 2
+	s = math.sqrt(n)
+	while (i < s):
+		if ((n % i) == 0):
+			return False
+
+		i += 1
 	return True
 
 #Gets a list of factors for n
