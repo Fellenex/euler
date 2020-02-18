@@ -36,6 +36,26 @@ def findFactors(n):
 	factorsList.reverse()
 	return(factorsList)
 
+#Returns a list of integers of the prime factors of _n
+def uniquePrimeFactorization(_n):
+	primeFactors = []
+	i = 2
+	while i < (_n/2)+1:
+		if _n % i == 0:
+			if check_Prime(i):
+				#print(str(i)+" is a prime factor, resetting target to "+str(_n/i))
+				primeFactors.append(i)
+
+				#reset the target and loop counter
+				_n = _n/i
+				i = 2
+		else:
+			i += 1
+	#adjust for the final prime factor, for which no prime factors were found
+	primeFactors.append(int(_n))
+	primeFactors.sort()
+	return(primeFactors)
+
 
 #this version of the sieve function utilizes two arrays, one with
 #numbers, and one with True/False values (True indicating prime and

@@ -4,23 +4,11 @@
 from primeFuncs import *
 
 
+	return factors
 
-def uniquePrimeFactorization(n):
-	primeFactors = []
-	i = 2
-	while i < (n/2)+1:
-		if n % i == 0:
-			if check_Prime(i):
-				print(str(i)+" is a prime factor, resetting target to "+str(n/i))
-				primeFactors.append(i)
-
-				#reset the target and loop counter
-				n = n/i
-				i = 2
-		i+=1
-	#adjust for the final prime factor, for which no prime factors were found
-	primeFactors.append(n)
-	return(primeFactors)
+def main():
+	n = 600851475143
+	#n = 13195
 
 target = 600851475143
 
