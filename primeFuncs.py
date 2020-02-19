@@ -13,24 +13,23 @@ def check_Prime(n):
 	return True
 
 #Written for problem 58, when old check_Prime was far too inefficient
-def checkPrimeEfficiently(n):
-	n = abs(n)
+def checkPrimeEfficiently(_n):
+	n = abs(_n)
 	i = 2
-	s = math.sqrt(n)
+	s = math.sqrt(n) + 1
 	while (i < s):
 		if ((n % i) == 0):
 			return False
-
 		i += 1
 	return True
 
 #Gets a list of factors for n
-def findFactors(n):
-	if n == 1 or n == 2: return([1])
-	i = (n/2)+1
+def findFactors(_n):
+	if _n == 1 or _n == 2: return([1])
+	i = (_n/2)+1
 	factorsList = []
 	while (i > 0):
-		if ((n % i) == 0):
+		if ((_n % i) == 0):
 			factorsList.append(i)
 		i -= 1
 	factorsList.reverse()
@@ -119,17 +118,17 @@ def sieve_of_eratos_three(n):
 #Since we don't initialize the value of each integer,
 #	there is some sketchy repeated try/except code to calculate the XOR.
 #Factoring it out would mean passing the data structure around.
-def sieve_of_atkin(n):
+def sieve_of_atkin(_n):
 	primeDict = {}
 	if n > 2: primeDict[2]=True
 	if n > 3: primeDict[3]=True
 
 	i = 1
-	while (i*i < n):
+	while (i*i < _n):
 		j = 1
-		while (j*j < n):
+		while (j*j < _n):
 			x = 4*(i*i) + (j*j)
-			if (x <= n and (x%12 == 1 or x%12 == 5)):
+			if (x <= _n and (x%12 == 1 or x%12 == 5)):
 				try:
 					#manual XOR since we don't initialize the list
 					if primeDict[x] == True:
@@ -143,7 +142,7 @@ def sieve_of_atkin(n):
 					primeDict[x] = True
 
 			x = 3*(i*i) + (j*j)
-			if (x <= n and x%12 == 7):
+			if (x <= _n and x%12 == 7):
 				try:
 					if primeDict[x] == True:
 						primeDict[x] = False
@@ -153,7 +152,7 @@ def sieve_of_atkin(n):
 					primeDict[x] = True
 
 			x = 3*(i*i) - (j*j)
-			if (i > j and x <= n and x%12 == 11):
+			if (i > j and x <= _n and x%12 == 11):
 				try:
 					if primeDict[x] == True:
 						primeDict[x] = False
@@ -165,10 +164,10 @@ def sieve_of_atkin(n):
 		i+=1
 
 	r = 5
-	while (r*r < n):
+	while (r*r < _n):
 		try:
 			if primeDict[r]:
-				for i in range(r*r, n, r*r):
+				for i in range(r*r, _n, r*r):
 					primeDict[i] = False
 		except KeyError:
 			#we were only removing multiples of squares.
