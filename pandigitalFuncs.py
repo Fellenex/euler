@@ -34,19 +34,20 @@ def countList(_number, _pandigitality=pandigitalBase, _noZeroesAllowed=True):
 
 
 #determines if a list of numbers has any overlapping digits
-def isValidSequence(_numbers):
+def isValidSequence(_numbers, _pandigitality=pandigitalBase, _noZeroesAllowed=True):
     validity = True
-    for n in countListMulti(_numbers):
+    for n in countListMulti(_numbers, _pandigitality, _noZeroesAllowed):
         #make sure each digit has been used exactly once
         if n > 1 or n == 0:
             validity = False
     return(validity)
 
+
 #Takes a list of integers and creates a count list for the digits of each
-def countListMulti(_numbers):
+def countListMulti(_numbers, _pandigitality=pandigitalBase, _noZeroesAllowed=True):
     cLists = []
     for n in _numbers:
-        cLists.append(countList(n))
+        cLists.append(countList(n),_pandigitality,_noZeroesAllowed)
 
     #merge the counts of all the lists by index
     fList = [0]*pandigitalBase
