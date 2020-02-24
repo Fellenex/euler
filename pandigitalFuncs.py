@@ -47,7 +47,7 @@ def isValidSequence(_numbers, _pandigitality=pandigitalBase, _noZeroesAllowed=Tr
 def countListMulti(_numbers, _pandigitality=pandigitalBase, _noZeroesAllowed=True):
     cLists = []
     for n in _numbers:
-        cLists.append(countList(n),_pandigitality,_noZeroesAllowed)
+        cLists.append(countList(n,_pandigitality,_noZeroesAllowed))
 
     #merge the counts of all the lists by index
     fList = [0]*pandigitalBase
@@ -56,3 +56,22 @@ def countListMulti(_numbers, _pandigitality=pandigitalBase, _noZeroesAllowed=Tru
             fList[j] += cLists[i][j]
 
     return(fList)
+
+
+#Takes a list of numbers and returns true/false depending on whether they all contain the exact same digits
+def numbersContainSameDigits(_numbers, _pandigitality=pandigitalBase, _noZeroesAllowed=True):
+    cLists = []
+    for n in _numbers:
+        cLists.append(countList(n,_pandigitality,_noZeroesAllowed))
+
+
+    sameDigits = True
+    for i in range(len(cLists[0])):
+        activeValue = cLists[0][i]
+        for c in cLists:
+
+            #if the number of 'i's doesn't match up across all lists,
+                #then the list doesn't contain rearrangements of the same number
+            if not(c[i] == activeValue):
+                sameDigits = False
+    return(sameDigits)
