@@ -6,22 +6,13 @@ Find the sum of all numbers which are equal to the sum of the factorial of their
 Note: as 1! = 1 and 2! = 2 are not sums they are not included.
 """
 
-
-factMemos = dict()
-factMemos[0] = 1
-factMemos[1] = 1
-
-def memoizedFactorial(n):
-    try:
-        return factMemos[n]
-    except KeyError:
-        return n*memoizedFactorial(n-1)
+from combinatoricFunctions import *
 
 for i in range(10):
     factMemos[i] = memoizedFactorial(i)
 
 factorialEqualsDigitSum = []
-for i in range(3,factMemos[9]*3):
+for i in range(3,int(factMemos[9]*3)):
     splitFactSum = 0
     for c in str(i):
         #print("\t"+c)
