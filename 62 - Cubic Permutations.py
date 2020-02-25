@@ -18,7 +18,6 @@ for i in range(10000):
     cubes.append(int(math.pow(i,3)))
 
 countLists = []
-#TODO:
 for i in range(10000):
     countLists.append(countList(cubes[i],9,False))
 
