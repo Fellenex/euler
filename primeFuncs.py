@@ -120,8 +120,8 @@ def sieve_of_eratos_three(n):
 #Factoring it out would mean passing the data structure around.
 def sieve_of_atkin(_n):
 	primeDict = {}
-	if n > 2: primeDict[2]=True
-	if n > 3: primeDict[3]=True
+	if _n > 2: primeDict[2]=True
+	if _n > 3: primeDict[3]=True
 
 	i = 1
 	while (i*i < _n):
