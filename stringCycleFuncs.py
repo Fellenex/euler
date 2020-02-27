@@ -9,6 +9,21 @@ def stringCyclicShift(_s):
     return(shifts)
 
 
+#Returns Boolean indicating whether string _s is a palindrome
+def isPalindrome(_s):
+    palindromic = True
+    length = len(_s)
+
+    #even-lengthed palindromes match all the way across, odd-lengthed ones have whatever character in the middle.
+    #int(x) automatically floors x, so we don't have to worry about comparing the middle element.
+    for i in range(int(length/2)):
+        if not(_s[i] == _s[-i-1]):
+            palindromic = False
+
+    return(palindromic)
+
+
+
 #Wrapper function to remove duplicate string permutations
 def allStringPermutations(_s, _maxIndex, _i=0):
     return list(set(allStringPermutationsRec(list(_s), _maxIndex, _i)))
