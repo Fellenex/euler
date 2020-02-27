@@ -5,15 +5,7 @@ Similarly, the 9-digit number, 134217728=89, is a ninth power.
 How many n-digit positive integers exist which are also an nth power?
 """
 
-
-#Getting math overflow errors using math.pow
-def myPow(_base, _pow):
-    p = _pow
-    r = _base
-    while p > 1:
-        r *= _base
-        p -=1
-    return(r)
+import genericMathFuncs
 
 
 #There are 9 integers n s.t. n^1 has 1 digit
