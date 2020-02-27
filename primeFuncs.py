@@ -112,13 +112,7 @@ def sieve_of_eratos_three(n):
 
 	return(primeDict)
 
-#An actually efficient sieve algorithm, modified
-#	to be more space-efficient with the use of dictionaries.
-#Finds all primes below supplied integer n.
-#Since we don't initialize the value of each integer,
-#	there is some sketchy repeated try/except code to calculate the XOR.
-#Factoring it out would mean passing the data structure around.
-def sieve_of_atkin(_n):
+def sieve_of_atkin_set(_n):
 	primeDict = {}
 	if _n > 2: primeDict[2]=True
 	if _n > 3: primeDict[3]=True
@@ -175,10 +169,18 @@ def sieve_of_atkin(_n):
 			pass
 		r+=1
 
-	primesList = []
-	fakePrimes = []
+	primeSet = set()
 	for key in primeDict:
 		if primeDict[key]:
-			primesList.append(key)
+			primeSet.add(key)
 
-	return(primesList)
+	return(primeSet)
+
+#An actually efficient sieve algorithm, modified
+#	to be more space-efficient with the use of dictionaries.
+#Finds all primes below supplied integer n.
+#Since we don't initialize the value of each integer,
+#	there is some sketchy repeated try/except code to calculate the XOR.
+#Factoring it out would mean passing the data structure around.
+def sieve_of_atkin(_n):
+	return(list(sieve_of_atkin_set(_n)))
