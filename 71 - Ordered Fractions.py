@@ -12,7 +12,6 @@ By listing the set of reduced proper fractions for d <= 1,000,000 in ascending o
 
 from primeFuncs import gcd
 
-#Already at d=10'000 we have a memory error.
 d = 10000
 
 #We can reduce the overall range by only saving fractions that are less than 3/7
@@ -22,24 +21,34 @@ maximalFraction = 3.0 / 7.0
 #We can also heuristically lower-bound things
 closestFraction = 3.0 / 8.0
 
-fracSet = set()
+#TODO:
+#Once we've found i/j < 3/7, i/(j+1) << 3/7.
+#e.g., no need to continue from 1/3 to 1/4 to ... 1/d
+#   the first i/j we find is the largest for any j.
 
-#Select denominators first.
-#   If i/j > 3/7, then also (i+1)/j > 3/7
 for i in range(1,d/2):
-    for j in range(2*i,d):
+    for j in range((2*i)+1,d):
         activeFraction = i / (j * 1.0)
-        if activeFraction < maximalFraction and activeFraction > closestFraction:
-            if gcd(i,j)==1:
-                fracSet.add((i,j))
+        if activeFraction < maximalFraction:
+            if activeFraction > closestFraction:
+                if gcd(i,j)==1:
 
-                #shrink the window of relevant fractions
-                closestFraction = activeFraction
-                #print("Adjusting to new min "+str(closestFraction))
+                    #shrink the window of relevant fractions
+                    closestFraction = activeFraction
+                    #print("Adjusting to new min "+str(closestFraction))
+            else:
+                #activeFraction < closestFraction
+                #Once we've found i/j < 3/7, i/(j+1) << 3/7.
+                #e.g., no need to continue from 1/3 to 1/4 to ... 1/d
+                #   the first i/j we find is the largest i/j for any j with fixed i.
+                break
+
         else:
-            continue
+            pass
+            #logic to do
+            #   If i/j > 3/7, then also (i+1)/j > 3/7
 
-print(sorted(list(fracSet)))
+print(closestFraction)
 
 exit()
 
