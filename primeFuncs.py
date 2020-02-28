@@ -55,6 +55,16 @@ def uniquePrimeFactorization(_n):
 	primeFactors.sort()
 	return(primeFactors)
 
+#Returns the greatest common divisor of two integers _a and _b
+def gcd(_a,_b):
+	while not(_a == _b):
+		if _a > _b:
+			_a -= _b
+		else:
+			_b -= _a
+	return(_a)
+
+
 
 #this version of the sieve function utilizes two arrays, one with
 #numbers, and one with True/False values (True indicating prime and
