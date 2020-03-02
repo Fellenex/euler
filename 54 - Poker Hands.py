@@ -1,3 +1,5 @@
+import os
+
 class Card:
     def __init__(self, _val, _suit):
         self.val = _val
@@ -102,6 +104,10 @@ class Hand:
 
         return(rank)
 
+#Ensures that the exit string is printed in the proper place
+def niceExit(_str):
+    print(_str)
+    exit()
 
 def rankToName(_rank):
     if _rank == 10: s="Royal Flush"
@@ -116,38 +122,201 @@ def rankToName(_rank):
     else: s="High Card"
     return(s)
 
+def loadFile():
+    playerHands = [[],[]]
+    with open(os.getcwd()+'\\54.txt') as f:
+        for line in f.readlines():
+            currHands = line.rstrip('\n').split(' ')
+            playerHands[0].append(Hand([Card(c[0],c[1]) for c in currHands[0:5]]))
+            playerHands[1].append(Hand([Card(c[0],c[1]) for c in currHands[5:]]))
+    return(playerHands)
+
 def compareHands(_handOne, _handTwo):
-    print("Pone has "+rankToName(_handOne.ranking())+", and ptwo has "+rankToName(_handTwo.ranking()))
+    #print("pOne has "+rankToName(_handOne.ranking())+", and pTwo has "+rankToName(_handTwo.ranking()))
     winner = 0
-    if _handOne.ranking() > _handTwo.ranking():
+    rOne = _handOne.ranking()
+    rTwo = _handTwo.ranking()
+
+    if rOne > rTwo:
         winner = 1
-    elif _handOne.ranking() < _handTwo.ranking():
+    elif rOne < rTwo:
         winner = 2
     else:
-        #have to compare the same hands
-
+        #have to compare the same-ranked hands
         #we can assume that it is not the case that both players have equal flushes/straights ("there is a clear winner")
+        oneHigh = 0
+        twoHigh = 0
 
-        #four of a kind comparison + high extra card comparison
-        #full house 3+2 comparison
-        #three of a kind + high extra card(s) comparison
-        #two pair comparison
-        #one pair comparison
-        #high card comparison
+        if rOne == 10:
+            niceExit("ERROR: P1 and P2 both have royal flushes")
+
+        #straight flush - player with lower starting card loses
+        #cycle through the rank count and find the lowest value
+        if rOne == 9:
+            for i in range(13):
+                if _handOne.rankCount[i] == 1 and _handTwo.rankCount[i] == 1:
+                    niceExit("ERROR: P1 and P2 have identical straight flushes")
+                elif _handOne.rankCount[i] == 1:
+                    winner = 2
+                    break
+                elif _handTwo.rankCount[i] == 1:
+                    winner = 1
+                    break
+
+        #four of a kind - only one extra possible card
+        if rOne == 8:
+            oneHigh = _handOne.rankCount.index(1)
+            twoHigh = _handTwo.rankCount.index(1)
+
+            if oneHigh > twoHigh:
+                winner = 1
+            elif twoHigh > oneHigh:
+                winner = 2
+            else:
+                niceExit("ERROR: P1 and P2 have identical four-of-a-kinds")
+
+        #full house
+        elif rOne == 7:
+            oneUpper = _handOne.rankCount.index(3)
+            oneLower = _handOne.rankCount.index(2)
+            twoUpper = _handTwo.rankCount.index(3)
+            twoLower = _handTwo.rankCount.index(2)
+
+            if oneUpper > twoUpper:
+                winner = 1
+            elif oneUpper < twoUpper:
+                winner = 2
+            else:
+                if oneLower > twoLower:
+                    winner = 1
+                elif oneLower < twoLower:
+                    winner = 2
+                else:
+                    niceExit("ERROR: P1 and P2 have identical full houses")
+
+        #flush
+        elif rOne == 6:
+            i = 12
+            #get the highest rank card where the hands don't match
+            while _handOne.rankCount[i] == _handTwo.rankCount[i]:
+                i -= 1
+
+            if _handOne.rankCount[i] > _handTwo.rankCount[i]:
+                winner = 1
+            elif _handOne.rankCount[i] < _handTwo.rankCount[i]:
+                winner = 2
+
+        #straight
+        elif rOne == 5:
+            #get the lowest rank card of either hand
+            for i in range(13):
+                if _handOne.rankCount[i] == 1 and _handTwo.rankCount[i] == 1:
+                    niceExit("ERROR: P1 and P2 have identical straights")
+                elif _handOne.rankCount[i] == 1:
+                    winner = 2
+                    break
+                elif _handTwo.rankCount[i] == 1:
+                    winner = 1
+                    break
+
+        #three of a kind
+        elif rOne == 4:
+            oneTriple = _handOne.rankCount.index(3)
+            twoTriple = _handOne.rankCount.index(3)
+            oneExtras = sorted([x for x in range(13) if (_handOne.rankCount[x] == 1 or _handOne.rankCount[x] == 2)])
+            twoExtras = sorted([x for x in range(13) if (_handTwo.rankCount[x] == 1 or _handTwo.rankCount[x] == 2)])
+            #oneExtras = sorted([x for x in _handOne.rankCount if (x == 1 or x == 2)])
+            #twoExtras = sorted([x for x in _handTwo.rankCount if (x == 1 or x == 2)])
+
+            if oneTriple == twoTriple:
+                i = 1
+                while oneExtras[i] == twoExtras[i]:
+                    i -= 1
+
+                if _handOne.rankCount[oneExtras[i]] > _handTwo.rankCount[twoExtras[i]]:
+                    winner = 1
+                elif _handOne.rankCount[oneExtras[i]] < _handTwo.rankCount[twoExtras[i]]:
+                    winner = 2
+
+        #two pair
+        elif rOne == 3:
+            oneFirstPair = _handOne.rankCount.index(2)
+            oneSecondPair = _handOne.rankCount[::-1].index(2)
+            oneHigh = _handOne.rankCount.index(1)
+            twoFirstPair = _handTwo.rankCount.index(2)
+            twoSecondPair = _handTwo.rankCount[::-1].index(2)
+            twoHigh = _handTwo.rankCount.index(1)
+
+            oneHighPair = max(oneFirstPair, oneSecondPair)
+            oneLowPair = min(oneFirstPair, oneSecondPair)
+            twoHighPair = max(twoFirstPair, twoSecondPair)
+            twoLowPair = min(twoFirstPair, twoSecondPair)
+
+            if oneHighPair > twoHighPair:
+                winner = 1
+            elif oneHighPair < twoHighPair:
+                winner = 2
+            else:
+                if oneLowPair > twoLowPair:
+                    winner = 1
+                elif oneLowPair < twoLowPair:
+                    winner = 2
+                else:
+                    if oneHigh > twoHigh:
+                        winner = 1
+                    elif oneHigh < twoHigh:
+                        winner = 2
+                    else:
+                        niceExit("ERROR: P1 and P2 have identical two pairs")
+
+        #one pair
+        elif rOne == 2:
+            onePair = _handOne.rankCount.index(2)
+            twoPair = _handTwo.rankCount.index(2)
+            oneExtras = sorted([x for x in range(13) if (_handOne.rankCount[x] == 1)])
+            twoExtras = sorted([x for x in range(13) if (_handTwo.rankCount[x] == 1)])
+
+            if onePair > twoPair:
+                winner = 1
+            elif onePair < twoPair:
+                winner = 2
+            else:
+                i = 2
+                while oneExtras[i] == twoExtras[i]:
+                    i -= 1
+
+                if oneExtras[i] > twoExtras[i]:
+                    winner = 1
+                elif oneExtras[i] < twoExtras[i]:
+                    winner = 2
+                else:
+                    niceExit("ERROR: P1 and P2 have identical one pairs")
+
+        #high card
+        elif rOne == 1:
+            i = 12
+            while _handOne.rankCount[i] == _handTwo.rankCount[i]:
+                i -= 1
+
+            if _handOne.rankCount[i] > _handTwo.rankCount[i]:
+                winner = 1
+            elif _handOne.rankCount[i] < _handTwo.rankCount[i]:
+                winner = 2
+            else:
+                niceExit("ERROR: P1 and P2 have identical high card hands")
+
+        else:
+            niceExit("ERROR: Unknown ranks "+str(rOne)+","+str(rTwo))
+
+    return(winner)
 
 
-pOneRaw = ["8S", "9S", "TS", "JS", "QS"]
-pTwoRaw = ["2C", "3S", "8S", "8D", "TD"]
+hands = loadFile()
+pOneHands = hands[0]
+pTwoHands = hands[1]
 
-pOneHands = [["5H", "5C", "6S", "7S", "KD"], ["5D", "8C", "9S", "JS", "AC"], ["2D", "9C", "AS", "AH", "AC"], ["4D", "6S", "9H", "QH", "QC"], ["2H", "2D", "4C", "4D", "4S"]]
-pTwoHands = [["2C", "3S", "8S", "8D", "TD"], ["2C", "5C", "7D", "8S", "QH"], ["3D", "6D", "7D", "TD", "QD"], ["3D", "6D", "7H", "QD", "QS"], ["3C", "3D", "3S", "9S", "9D"]]
-
-for i in range(5):
-    h = Hand([Card(c[0],c[1]) for c in pOneHands[i]])
-    k = Hand([Card(c[0],c[1]) for c in pTwoHands[i]])
-    compareHands(h,k)
-
-
-
-#h = Hand([Card(c[0],c[1]) for c in pOneRaw])
-#k = Hand([Card(c[0],c[1]) for c in pTwoRaw])
+pOneWins = 0
+for z in range(1000):
+    if compareHands(pOneHands[z], pTwoHands[z]) == 1:
+        pOneWins += 1
+print("Player one won "+str(pOneWins)+" times")
