@@ -27,8 +27,25 @@ for d in precededByDict:
     if len(precededByDict[d]) > 0:
         print(d, precededByDict[d])
 
-#print(sorted(precededByDict.values()))
 
-#Found solution:
-    #73162890
-#The code itself was derived from inspection.
+#get the code by iterating through the values list in order,
+#   and taking the new value each time.
+shortestCode = []
+for s in sorted(precededByDict.values()):
+    maxLength = 0
+
+    #skip empty lists
+    if len(s) > 0:
+        for i in s:
+            if not(i in shortestCode):
+                shortestCode.append(i)
+
+    maxLength = max(maxLength, len(s))
+
+
+#account for the last element who doesn't need to be preceded by anything
+for d in precededByDict:
+    if len(precededByDict[d]) == maxLength:
+        shortestCode.append(d)
+
+print(("".join(shortestCode)))
