@@ -7,6 +7,7 @@ Find the sum of all numbers, less than one million, which are palindromic in bas
 """
 
 import math
+from stringCycleFuncs import isPalindrome
 
 
 #Converts a decimal number _n into a binary string with the smallest number of bits.
@@ -42,18 +43,6 @@ def padBinaryNumber(_b, _desiredLength):
     else:   #len(_b) < _desiredLength
         prefix = '0' * (_desiredLength - bLength)
         return(prefix+_b)
-
-def isPalindrome(_s):
-    palindromic = True
-    length = len(_s)
-
-    #even-lengthed palindromes match all the way across, odd-lengthed ones have whatever character in the middle.
-    #int(x) automatically floors x, so we don't have to worry about comparing the middle element.
-    for i in range(int(length/2)):
-        if not(_s[i] == _s[-i-1]):
-            palindromic = False
-
-    return(palindromic)
 
 
 #We have to check up to 1'000'000, whose binary number has a length of 20.

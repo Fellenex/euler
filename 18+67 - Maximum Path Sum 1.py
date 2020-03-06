@@ -10,7 +10,7 @@ class Node:
 #get the number path information
 numbers = []
 #with open(os.getcwd()+'\\Euler\\18.txt') as f:
-with open(os.getcwd()+'\\Euler\\67.txt') as f:
+with open(os.getcwd()+'\\67.txt') as f:
     data = f.readlines()
     for line in data:
         numbers.append(map(int, line.rstrip('\n').split(' ')))
