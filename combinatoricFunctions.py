@@ -1,6 +1,6 @@
 factMemos = dict()
-factMemos[0] = 1.0
-factMemos[1] = 1.0
+factMemos[0] = 1
+factMemos[1] = 1
 
 def memoizedFactorial(_n):
     try:
