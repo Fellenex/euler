@@ -39,6 +39,10 @@ def isoAreaBigger(_x):
     return (1.0 / 4) * (_x+1) * math.sqrt(3*_x*_x - 2*_x - 1)
 
 
+
+def isoAreaSquared(_x, _y):
+    return (_y*_y)/4.0 * (_x*_x - (_y*_y)/4)
+
 upperBound = 1000000000
 #upperBound = 10000000
 maxSideLength = int(upperBound / 3.0)
@@ -137,7 +141,11 @@ fThree = time.time()
 
 
 
+
+
+
 """From OEIS 120893: "For n>1, hypotenuse of primitive Pythagorean triangles having an angle nearing pi/3 for larger values of sides."""
+"""
 def oeisSequence(_n):
     if not(_n in generatedSideLengths):
         generatedSideLengths[_n] = 3*oeisSequence(_n-1) + 3*oeisSequence(_n-2) - oeisSequence(_n-3)
@@ -152,19 +160,21 @@ sumOfPerimeters = 0
 i = 2       #the first triangle (5,5,6) uses index 2 of the sequence, and it increments from there
 activeValue = oeisSequence(i)
 
-print([oeisSequence(x) for x in range(0,16)])
+
 
 
 while activeValue <= maxSideLength:
 
     #a triangle of the form (x, x, x+1)
-    if (isoAreaBigger(activeValue) % 1) == 0:
-        print("larger "+str(activeValue)+", adding "+str(activeValue * 3 + 1))
+    baseLargerTriangle = isoAreaBigger(activeValue)
+    if (baseLargerTriangle % 1) == 0:
+        print("(%d, %d, %d) triangle. area %d, perimeter %d." % (activeValue, activeValue, activeValue+1, baseLargerTriangle, activeValue * 3 + 1))
         sumOfPerimeters += (activeValue * 3) + 1
 
     #a triangle of the form (x, x, x-1)
-    if (isoAreaSmaller(activeValue) % 1) == 0:
-        print("smaller "+str(activeValue)+" adding "+str(activeValue * 3 - 1))
+    baseSmallerTriangle = isoAreaSmaller(activeValue)
+    if (baseSmallerTriangle % 1) == 0:
+        print("(%d, %d, %d) triangle. area %d, perimeter %d." % (activeValue, activeValue, activeValue-1, baseSmallerTriangle, activeValue * 3 - 1))
         sumOfPerimeters += (activeValue * 3) - 1
 
 
@@ -177,19 +187,27 @@ while activeValue <= maxSideLength:
 print(sumOfPerimeters)
 fFour = time.time()
 
-"""
-sThree = time.time()
-validLarger = [x for x in range(2, maxSideLength) if isInteger(math.sqrt(3*x*x - 2*x - 1))]
-validSmaller = [x for x in range(2, maxSideLength) if isInteger(math.sqrt(3*x*x + 2*x - 1))]
-
-print(sorted(validLarger + validSmaller))
-print(sum([3*x + 1 for x in validLarger]) + sum([3*x - 1 for x in validSmaller]))
-
-fThree = time.time()
+print([oeisSequence(x) for x in range(0,16)])
 """
 
+#process:
+#    make a list of all squares x*x s.t. x*3+1 <= 1'000'000'000 / 3
+#   work upwards, checking each number to see if their
+i=2
+sumOfPerimeters = 0
+#squaresList = [x*x for x in range(1, 100000)]
+#print(squaresList)
+while i <= maxSideLength:
+    if i % 1000000 == 0: print("1 more mill")
 
-#print(fOne - sOne)
-#print(fTwo - sTwo)
-#print(fThree - sThree)
-print(fFour - sFour)
+    if math.sqrt(isoAreaSquared(i,i+1)) % 1 == 0:
+        sumOfPerimeters += (i*3) + 1
+        #print("Larger base: (%d,%d,%d), perimeter %d" % (i,i,i+1, (i*3)+1) )
+
+    if math.sqrt(isoAreaSquared(i,i-1)) % 1 == 0:
+        sumOfPerimeters += (i*3) - 1
+        #print("Smaller base: (%d,%d,%d), perimeter %d" % (i,i,i-1, (i*3)-1) )
+
+    i += 1
+
+print(sumOfPerimeters)
