@@ -10,37 +10,48 @@ If dn represents the nth digit of the fractional part, find the value of the fol
 d1 × d10 × d100 × d1000 × d10000 × d100000 × d1000000
 """
 
-max = 10000001
-targets = [1, 10, 100, 1000, 10000, 100000, 1000000]
-numTargets = len(targets)
+def getDigitsOfNaturalSequence(_targets):
+    targetValues = []
+    n = 1  #n increments one by one to know which digits to add onto the fraction
+    t = 1   #t increments throughout the targets list when we've found one of the targets
 
-#where we'll store the digits we want to multiply. We skip over 1
-targetValues = [1]
+    #keeps track of how long the fraction is so that we know when to save a value
+    fractionLength = 1
 
-n = 1  #n increments one by one to know which digits to add onto the fraction
-t = 1   #t increments throughout the targets list when we've found one of the targets
+    while n < _targets[-1] and t < len(_targets):
+        currLength = len(str(n))
+        n += 1
 
-#keeps track of how long the fraction is so that we know when to save a value
-fractionLength = 1
+        #if adding this next string of n onto the total fraction length would exceed one of the targets,
+            #but it doesn't currently, then the target digit appears in n.
+        if (fractionLength + currLength >= _targets[t]) and (fractionLength <= _targets[t]):
 
-while n < max and t < numTargets:
-    currLength = len(str(n))
-    n += 1
+            difference = fractionLength + currLength - _targets[t]
+            print(n, fractionLength, currLength, difference)
+            targetValues.append(int( str(n)[difference] ))
 
-    #if adding this next string of n onto the total fraction length would exceed one of the targets,
-        #but it doesn't currently, then the target digit appears in n.
-    if (fractionLength + currLength >= targets[t]) and (fractionLength <= targets[t]):
+            t += 1      #we move on to the next target
 
-        difference = fractionLength + currLength - targets[t]
-        targetValues.append(int(str(n)[difference]))
+        #adjust the fraction's total length to reflect the addition of n
+        fractionLength += currLength
 
-        t += 1      #we move on to the next target
+    return targetValues
 
-    #adjust the fraction's total length to reflect the addition of n
-    fractionLength += currLength
 
-print(targetValues)
-product = 1
-for v in targetValues:
-    product *= v
-print(product)
+#Gets the digits requested by the euler problem 40
+def testDigitsFunction(_targets):
+    numTargets = len(_targets)
+
+    digits = getDigitsOfNaturalSequence(_targets)
+    product = 1
+    for v in digits:
+        product *= v
+    print(product)
+
+
+#Test for the euler problem 40
+testDigitsFunction([1, 10, 100, 1000, 10000, 100000, 1000000])
+
+
+#A random collection of extra numbers
+testDigitsFunction([1, 4, 8, 13, 16, 17, 18, 19, 22])
