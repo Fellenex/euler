@@ -7,6 +7,7 @@ It can be seen that the 12th digit of the fractional part is 1.
 
 If dn represents the nth digit of the fractional part, find the value of the following expression.
 
+<<<<<<< HEAD
 d1 × d10 × d100 × d1000 × d10000 × d100000 × d1000000
 """
 
