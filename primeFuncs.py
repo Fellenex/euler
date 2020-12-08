@@ -67,7 +67,7 @@ def gcd(_a,_b):
 #Returns Boolean indicating whether integers _a and _b are coprime
 def coprime(_a,_b):
 	return(gcd(_a,_b) == 1)
-	
+
 
 #this version of the sieve function utilizes two arrays, one with
 #numbers, and one with True/False values (True indicating prime and
