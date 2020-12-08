@@ -1,3 +1,5 @@
+import itertools
+
 pandigitalBase = 9
 
 #determines if a single number has any overlapping digits
@@ -75,3 +77,25 @@ def numbersContainSameDigits(_numbers, _pandigitality=pandigitalBase, _noZeroesA
             if not(c[i] == activeValue):
                 sameDigits = False
     return(sameDigits)
+
+
+#Returns a list of all pandigital numbers, with specified base and zero-allowance.
+def generateAllPandigitals(_pandigitality=pandigitalBase, _noZeroesAllowed=True):
+
+    #Changes how the permutations work if we don't allow zeroes
+    if _noZeroesAllowed:
+        zeroOffset = 1
+    else:
+        zeroOffset = 0
+
+    #Get all the permutations of pandigital numbers
+    pandigitals = itertools.permutations(range(zeroOffset, pandigitalBase + 1), pandigitalBase+1 - zeroOffset)
+
+    #Turn each itertool tuple into a string
+    pandigitalStrings = []
+    for p in pandigitals:
+        pandigitalStrings.append("")
+        for c in p:
+            pandigitalStrings[-1] += str(c)
+
+    return(pandigitalStrings)

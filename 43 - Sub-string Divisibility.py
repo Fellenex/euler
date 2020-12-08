@@ -13,26 +13,30 @@ Let d1 be the 1st digit, d2 be the 2nd digit, and so on. In this way, we note th
 
 Find the sum of all 0 to 9 pandigital numbers with this property.
 """
-
 from pandigitalFuncs import *
 
 
-divisibilityTriples = [2,3,5,7,11,13,17]
-indexTriples = [(2,4), (3,5), (4,6), (5,7), (6,8), (7,9), (8,10)]
+divisibilityChecks = [2,3,5,7,11,13,17]
+indexTuples = [(1,4), (2,5), (3,6), (4,7), (5,8), (6,9), (7,10)]
+haveDivisibilityProperty = []
 
-pandigitalNumbers = []
+pandigitalStrings = generateAllPandigitals(pandigitalBase, False)
 
-#These numbers are too large to iterate through, discovering pandigitality (re: time taken to do so)
-#Instead, TODO: they need to be generated using permutations.
-n = 1023456789
-while n <= 9876543210:
-    if isValidMult(n, 9, False):
-        pandigitalNumbers.append(n)
-    n+=1
+assert(len(divisibilityChecks) == len(indexTuples))
+for p in pandigitalStrings:
 
-print(pandigitalNumbers)
-exit()
+    #start the counter to see how many of the numbers we get through.
+    #we start from the end because the larger primes have fewer multiples, so we eliminate more checks earlier.
+    i = len(indexTuples) - 1
 
-for p in pandigitalNumbers:
-    for i in range(7):
-        sP = str(p)[indexTriples[i][0]-1:indexTriples[i][1]]
+    #loop through each index of divisibility check.
+    while i >= 0 and int(p[indexTuples[i][0] : indexTuples[i][1]]) % divisibilityChecks[i] == 0:
+        i -= 1
+
+    #every segment is divisible by the proper numbers.
+    if i == -1:
+        haveDivisibilityProperty.append(int(p))
+
+
+print(haveDivisibilityProperty)
+print(sum(haveDivisibilityProperty))
