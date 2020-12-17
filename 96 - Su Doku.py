@@ -167,9 +167,10 @@ for puzzle in sudokus:
     stillChanging = True
     checkCount = 0
 
-    #sweep check for cells with only one remaining possibility
     while stillChanging or checkCount < 100:
         changed = 0
+
+        #sweep check for cells with only one remaining possibility
         for r in range(suPuzzle.BOARD_SIZE):
             for c in range(suPuzzle.BOARD_SIZE):
                 if puzzle.rows[r][c].numPossibilities() == 1:
@@ -177,15 +178,74 @@ for puzzle in sudokus:
                     puzzle.rows[r][c].value = puzzle.rows[r][c].possibilities[0]
                     puzzle.rows[r][c].possibilities.remove(puzzle.rows[r][c].value)
 
+        puzzle.updatePossibilities()
+
+        #work across all possible values [1..9]
+        for i in range(suPuzzle.BOARD_SIZE+1):
+
+            #sweep each row to see if there is only one cell which can take on a specific value
+            for r in range(suPuzzle.BOARD_SIZE):
+
+                #if there is only one cell in this row that can take on value i, then i should be placed there.
+                if sum([cell.possibilities.count(i) for cell in puzzle.rows[r]]) == 1:
+
+                    #find the place where i can go
+                    for c in range(suPuzzle.BOARD_SIZE):
+                        if i in puzzle.rows[r][c].possibilities:
+                            #change the value of this cell, and remove its possibilities.
+                            #it was the only cell of this row that could have i as a value, but there could still be
+                            #   changes to the column and square possibilities trackers.
+                            puzzle.rows[r][c].value = i
+                            puzzle.rows[r][c].possibilities = []
+
+                    changed += 1
+                    puzzle.updatePossibilities()
+
+
+            #sweep each col to see if there is only one cell which can take on a specific value
+            for c in range(suPuzzle.BOARD_SIZE):
+                if sum([cell.possibilities.count(i) for cell in puzzle.cols[c]]) == 1:
+
+                    #find the place where i can go
+                    for r in range(suPuzzle.BOARD_SIZE):
+                        if i in puzzle.rows[r][c].possibilities:
+                            #change the value of this cell, and remove its possibilities
+                            #it was the only cell of this col that could have i as a value, but there could still be
+                            #   changes to the square possibilities tracker.
+                            puzzle.cols[c][r].value = i
+                            puzzle.cols[c][r].possibilities = []
+
+                    changed += 1
+                    puzzle.updatePossibilities()
+
+            #sweep each square to see if there is only one cell which can take on a specific value
+            for sq in range(suPuzzle.BOARD_SIZE):
+                if sum([cell.possibilities.count(i) for cell in puzzle.squs[sq]]) == 1:
+
+                    #find the place where i can go
+                    for x in range(suPuzzle.BOARD_SIZE):
+                        if i in puzzle.squs[sq][x].possibilities:
+                            #change the value of this cell, and remove its possibilities
+                            #it was the only cell of this col that could have i as a value, but there could still be
+                            #   changes to the square possibilities tracker.
+                            puzzle.squs[sq][x].value = i
+                            puzzle.squs[sq][x].possibilities = []
+
+                    changed += 1
+                    puzzle.updatePossibilities()
+
         checkCount += 1
 
         if changed == 0:
             stillChanging = False
 
-        puzzle.updatePossibilities()
+        #puzzle.updatePossibilities()
 
 
     if puzzle.isComplete():
         numSolved += 1
+    else:
+        print(puzzle)
+        print()
 
 print("Solved %s sudokus, out of a total of %s" % (numSolved, numPuzzles))
