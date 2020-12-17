@@ -1,5 +1,3 @@
-import os
-
 class Node:
     def __init__(self, _val):
         self.val = _val
@@ -9,7 +7,6 @@ class Node:
 
 #get the number path information
 numbers = []
-#with open(os.getcwd()+'\\Euler\\18.txt') as f:
 with open('euler\\81.txt') as f:
     data = f.readlines()
     for line in data:
@@ -28,7 +25,6 @@ while i < numRows:
 
     numberObjects.append(objectRow)
     i +=1
-
 
 #initialize the final element, which has 0 available moves remaining
 numberObjects[-1][-1].right = numberObjects[-1][-1].val
@@ -59,7 +55,7 @@ while i >= 0:
         numberObjects[i][j].down = numberObjects[i][j].val + min(numberObjects[i+1][j].right, numberObjects[i+1][j].down)
         numberObjects[i][j].right = numberObjects[i][j].val + min(numberObjects[i][j+1].right, numberObjects[i][j+1].down)
 
-        #print("down and right of "+str(numberObjects[i][j].val)+" are "+str(numberObjects[i][j].down)+","+str(numberObjects[i][j].right))
+        #print("down and right of %s are %s and %s" % (numberObjects[i][j].val, numberObjects[i][j].down, numberObjects[i][j].right))
         j -= 1
 
     i -= 1
