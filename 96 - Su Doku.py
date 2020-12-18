@@ -118,6 +118,18 @@ class suPuzzle:
                     ]
 
 
+        for r in range(suPuzzle.BOARD_SIZE):
+            for c in range(suPuzzle.BOARD_SIZE):
+                if len(self.rows[r][c].possibilities) == 2:
+
+                    #check to see if this pair of possibilities occurs more than once
+                    #if self.rows[r][c].possibilities in ([self.rows[r][i].possibilities for i in list(range(0,c)) + list(range(c+1, suPuzzle.BOARD_SIZE))]):
+                    #if self.rows[r][c].possibilities in ([p[c].possibilities for p in self.rows[0:r] + self.rows[r+1:]]):
+
+                    #if so, then we can remove these possibilities from the remaining cells in the column containing it
+
+
+
     #returns boolean indicating whether or not all cells are filled in
     def isComplete(self):
         complete = True
